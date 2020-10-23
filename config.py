@@ -25,9 +25,9 @@ MAIL_SERVER = 'smtp.qq.com'
 MAIL_PROT = 25
 MAIL_USE_TLS = True
 MAIL_USE_SSL = False
-MAIL_USERNAME = "2447238905@qq.com"
-MAIL_DEFAULT_SENDER = "2447238905@qq.com"
-MAIL_PASSWORD = "yvbfqkigaxdpdhgj"
+MAIL_USERNAME = "自己的邮箱"
+MAIL_DEFAULT_SENDER = "自己的邮箱"
+MAIL_PASSWORD = "自己的SMTP密码"
 MAIL_DEBUG = True
 
 # redis配置
