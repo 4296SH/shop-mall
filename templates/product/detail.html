@@ -1,0 +1,151 @@
+{% extends 'user/base.html' %}
+
+{% block title %}
+    商品详情
+{% endblock %}
+
+{% block head %}
+    <link href="{{ url_for('static',filename='css/product.css') }}" rel="stylesheet" type="text/css"/>
+    <script src="{{ url_for('static',filename='js/detail.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/base.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/paginathing.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/login_mt.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/flyto.js') }}"></script>
+    <script src="http://cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
+{% endblock %}
+
+{% block main %}
+    <div class="container productContent">
+        <div class="span6">
+            <div class="hotProductCategory">
+                {% for category in categorys %}
+                    <dl>
+                        <dt>
+                            <a href="{{ url_for('product.getClassify',cid=category.id) }}">{{ category.cname }}</a>
+                        </dt>
+                        {% for categorysecond in category.categoryseconds %}
+                            <dd>
+                                {% if csid == categorysecond.id %}
+                                    <a href="{{ url_for('product.getClassify',csid=categorysecond.id) }}"
+                                       class="categorysecond">{{ categorysecond.csname }}</a>
+                                {% else %}
+                                    <a href="{{ url_for('product.getClassify',csid=categorysecond.id) }}">{{ categorysecond.csname }}</a>
+                                {% endif %}
+                            </dd>
+                        {% endfor %}
+                    </dl>
+                {% endfor %}
+            </div>
+
+        </div>
+        <div class="span18 last other_area_last">
+
+            <div class="productImage">
+
+                <a title="" style="outline-style: none; text-decoration: none;" id="zoom" href="{{ images[0] }}"
+                   target="_blank"
+                   rel="gallery">
+                    <div class="zoomPad">
+                        <img style="opacity: 1;" title="" class="medium" src="{{ images[0] }}">
+                    </div>
+                </a>
+
+            </div>
+            <span style="display: none" class="no_use_pid">{{ product.id }}</span>
+         
+            <div class="name">{{ product.pname }}</div>
+
+         
+            <div class="info">
+                <dl>
+                    <dt>新品价:</dt>
+                    <dd>
+                        <strong>
+                            <del>￥{{ product.old_price }}元</del>
+                        </strong>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>中工价:</dt>
+                    <dd>
+                        <strong>￥{{ product.new_price }}元</strong>
+                    </dd>
+                </dl>
+                {% if product.counts == 0 %}
+                    <dl>
+                        <dt>商品状态:</dt>
+                        <dd>
+                            <a target="_blank" title="已售完">已售完</a>
+                        </dd>
+                    </dl>
+                {% else %}
+                    <dl>
+                        <dt>促销:</dt>
+                        <dd>
+                            <a target="_blank">限时抢购</a>
+                        </dd>
+                    </dl>
+                {% endif %}
+            </div>
+            <form action="cart_addCart" method="post" id="cartForm">
+                <input type="hidden" name="pid" value="${pPro.pid}"/>
+                <div class="action">
+
+                    <dl class="quantity">
+                        <dt>购买数量:</dt>
+                        <dd>
+                            <input id="count" oninput="checkCount()" onkeyup="this.value=this.value.replace(/\D/g,'')"
+                                   onafterpaste="this.value=this.value.replace(/\D/g,'')" name="count" value="1"
+                                   maxlength="4" onpaste="return false;" type="text">
+                            <div>
+                                <span style="margin-left: 10px">目前此商品数量为<span
+                                        style="color: #E14961;font-weight: bolder">{{ product.counts }}</span></span>
+                            </div>
+                        </dd>
+                    </dl>
+                    {% if product.counts == 0 %}
+                        <div class="buy">
+                            <input class="addCart" style="background: lightgrey;text-align: center" value="已售完"
+                                   type="button">
+                        </div>
+                    
+                    {% else %}
+                        <div class="buy">
+                            <input id="addCart" class="addCart" value="加入购物车" type="button">
+                        </div>
+                    {% endif %}
+                </div>
+            </form>
+           
+            <div id="introduction" name="introduction" class="introduction detail_all">
+                <h3 style="text-align: center">商品描述</h3>
+                <div class="title">
+                    <strong> {{ product.pDesc }}</strong>
+                </div>
+                <div>
+                    {% for image in images %}
+                        <img src="{{ image }}">
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: none;" id="rocket-to-top">
+        <div style="opacity:0;display: block;" class="level-2"></div>
+        <div class="level-3"></div>
+    </div>
+
+    <div id="wrapper" class="post_list">
+        <div class="close_btn">关闭</div>
+        <h3 style="text-align: center">在售商品共有<span class="post_num">0</span>件</h3>
+        <div class="product_list flex_row">
+        </div>
+
+    </div>
+
+
+    {% include 'user/login_mt.html' %}
+{% endblock %}
